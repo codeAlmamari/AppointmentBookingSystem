@@ -387,8 +387,8 @@ Every sensitive action is recorded with:
 ---
 
 ## Deployment (Railway)
-
-
+You can only open the URL "https://appointmentbookingsystem-production-b878.up.railway.app/api/staff" you can replace '/api/staff' with any API you whant
+or just visit "https://appointmentbookingsystem-production-b878.up.railway.app/swagger" to view all API's.
 
 
 The app auto-migrates and seeds on every startup.
