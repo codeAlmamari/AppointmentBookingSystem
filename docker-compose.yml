@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    container_name: flowcare_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: flowcare
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres123}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flowcare_api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=flowcare;Username=postgres;Password=${DB_PASSWORD:-postgres123}"
+      FileStorage__BasePath: "/app/uploads"
+      RateLimit__MaxBookingsPerDay: "5"
+      RateLimit__MaxReschedulesPerDay: "3"
+      SlotCleanup__IntervalHours: "1"
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads:/app/uploads
+
+volumes:
+  pgdata:
+  uploads:
