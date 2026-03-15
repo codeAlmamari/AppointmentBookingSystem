@@ -70,7 +70,7 @@ namespace AppointmentBookingSystem
             app.MapOpenApi();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("http://localhost:8080/openapi/v1.json", "FlowCare API v1");
+                c.SwaggerEndpoint("/openapi/v1.json", "FlowCare API v1");
                 c.RoutePrefix = "swagger";
             });
             
