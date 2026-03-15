@@ -66,16 +66,14 @@ namespace AppointmentBookingSystem
                 }
             }
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            
+            app.MapOpenApi();
+            app.UseSwaggerUI(c =>
             {
-                app.MapOpenApi();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("http://localhost:8080/openapi/v1.json", "FlowCare API v1");
-                    c.RoutePrefix = "swagger";
-                });
-            }
+                c.SwaggerEndpoint("http://localhost:8080/openapi/v1.json", "FlowCare API v1");
+                c.RoutePrefix = "swagger";
+            });
+            
 
             if (!app.Environment.IsDevelopment())
             {
